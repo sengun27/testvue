@@ -1,28 +1,63 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app" class="small-container">
+    <h1>Table</h1>
+    <StudentForm @add="addElement"/>
+    <StudentTable 
+      v-bind:elements="elements" 
+      @delete="deleteElement"
+      @edit="editElement"
+    />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import StudentTable from './components/Table.vue'
+import StudentForm from './components/Form.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    StudentTable,
+    StudentForm,
+  },
+  data() {
+    return {
+      elements: [
+        {
+          id: 1,
+          name: 'Yamamoto Taro',
+          email: 'taro@sample.co.jp',
+        },
+      ],
+    }
+  },
+  methods :{
+    addElement(e){
+      const id = this.elements.length + 1
+      const newElement = {...e, id}
+      this.elements = [...this.elements, newElement]
+    },
+    deleteElement(id) {
+      this.elements = this.elements.filter(
+        e => e.id !== id
+      )
+    },
+    editElement(id, element){
+      this.elements == this.elements.map(e =>
+        e.id === id ? element : e
+      )
+    },
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+button {
+    background: #009435;
+    border: 1px solid #009435;
+}
+
+.small-container {
+    max-width: 680px;
 }
 </style>
